@@ -26,3 +26,7 @@ You can run host applications on Xwayland in docker with:
 read Xenv < <(x11docker --wayland --gpu x11docker/xwayland)
 env $Xenv firefox
 ```
+ # Screenshot
+ Xwayland in docker with fvwm desktop in a Weston Wayland window:
+ 
+ ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-xwayland.png "Xwayland in docker with fvwm desktop in a Weston Wayland window")

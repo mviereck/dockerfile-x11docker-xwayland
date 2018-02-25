@@ -5,7 +5,7 @@ Run Xwayland in docker. You don't need any X server on host, you only need eithe
  - Get x11docker from github: 
   https://github.com/mviereck/x11docker 
   
-# Example 
+# Examples
 If `weston` or `kwin_wayland` are installed on host, you can also run from tty console.
 
  - `x11docker --wayland --gpu x11docker/xwayland`

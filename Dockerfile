@@ -16,7 +16,7 @@
 # This example runs an X server (Xwayland) in container 
 # without needing any X server on host.
 #
-# This image runs openbox on xwayland as an example application.
+# This image runs fvwm on Xwayland as an example desktop environment.
 # Install your desired application and fill it in xinitrc below.
 
 FROM debian:stretch-slim
@@ -24,12 +24,19 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y --no-install-recommends xinit
 RUN apt-get install -y xwayland mesa-utils mesa-utils-extra
 
-# Install openbox and xterm
-RUN apt-get install -y openbox xterm
+# Install locales and set to english
+ENV LANG en_US.UTF-8
+RUN echo $LANG UTF-8 > /etc/locale.gen
+RUN apt-get install -y locales && update-locale --reset LANG=$LANG
+
+# Install window manager and xterm
+RUN apt-get install -y --no-install-recommends fvwm lxmenu-data xterm
+
 
 # Fill in desired X applications or desktop to run.
 RUN echo '\n\
-openbox --sm-disable\n\
+fvwm\n\
 ' > /xinitrc
+
 
 CMD xinit /xinitrc -- /usr/bin/Xwayland :1 -retro

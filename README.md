@@ -23,7 +23,7 @@ This example runs an X server (`Xwayland`) in container without needing any X se
 # Host applications on containered X server
 You can run host applications on Xwayland in docker with:
 ```
-read Xenv < <(x11docker --wayland --gpu x11docker/xwayland)
+read Xenv < <(x11docker --wayland --gpu --showenv x11docker/xwayland)
 env $Xenv firefox
 ```
  # Screenshot

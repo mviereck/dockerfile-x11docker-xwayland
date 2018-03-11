@@ -1,12 +1,12 @@
 # x11docker/xwayland
 Run Xwayland in docker. You don't need any X server on host, you only need either `weston` or `kwin_wayland` to be installed, or any Wayland compositor like `Gnome 3 Wayland session` already running.
+If `weston` or `kwin_wayland` are installed on host, you can also run from tty / console.
 
  - Use x11docker to run image. 
  - Get x11docker from github: 
   https://github.com/mviereck/x11docker 
   
 # Examples
-If `weston` or `kwin_wayland` are installed on host, you can also run from tty console.
 
  - `x11docker --wayland --gpu x11docker/xwayland`
 

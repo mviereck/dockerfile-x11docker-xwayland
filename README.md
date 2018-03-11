@@ -16,9 +16,18 @@ Explicitly using `weston`:
 Explicitly using `kwin_wayland`: 
  - `x11docker --kwin --gpu x11docker/xwayland`
 
-Look at `x11docker --help` for further options.
-
 This example runs an X server (`Xwayland`) in container without needing any X server on host. As a sample X application it runs `fvwm` window manager. Adjust Dockerfile with your desired X applications.
+
+# Options:
+ - Persistent home folder stored on host with   `--home`
+ - Shared host folder with                      `--sharedir DIR`
+ - Hardware acceleration with option            `--gpu`
+ - Clipboard sharing with option                `--clipboard`
+ - Sound support with option                    `--alsa`
+ - With pulseaudio in image, sound support with `--pulseaudio`
+ - Language locale settings with                `--lang $LANG`
+
+Look at `x11docker --help` for further options.
 
 # Host applications on containered X server
 You can run host applications on Xwayland in docker with:

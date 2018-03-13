@@ -42,6 +42,6 @@ Be aware that directory `/tmp/.X11-unix` must already exist on host with permiss
 
 You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
  # Screenshot
- Xwayland in docker with fvwm desktop in a Weston Wayland window:
+ Xwayland in docker running fvwm desktop and providing `launchy` from host:
  
  ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-xwayland.png "Xwayland in docker with fvwm desktop in a Weston Wayland window")

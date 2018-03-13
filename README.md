@@ -16,9 +16,19 @@ Explicitly using `weston`:
 Explicitly using `kwin_wayland`: 
  - `x11docker --kwin --gpu x11docker/xwayland`
 
-This example runs an X server (`Xwayland`) in container without needing any X server on host. As a sample X application it runs `fvwm` window manager. Adjust Dockerfile with your desired X applications.
+To run empty Xwayland without a window manager:
+ - `x11docker --wayland --gpu x11docker/xwayland sleep infinity`
 
-# Options:
+This example runs an X server (`Xwayland`) in container without needing any X server on host. As a sample X application it runs `fvwm` window manager. Adjust Dockerfile with your desired window manager or desktop environment, or create a new Dockerfile with `x11docker/xwayland` as a base:
+```
+# afterstep window manager on Xwayland
+FROM x11docker/xwayland
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends afterstep
+CMD afterstep
+```
+
+# Options
  - Persistent home folder stored on host with   `--home`
  - Shared host folder with                      `--sharedir DIR`
  - Hardware acceleration with option            `--gpu`
@@ -41,6 +51,9 @@ Be aware that directory `/tmp/.X11-unix` must already exist on host with permiss
 `Xenv` will contain `DISPLAY` of Xwayland. You can specify a custom display number with option `--display N`.
 
 You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
+
+
+
  # Screenshot
  Xwayland in docker running fvwm desktop and providing `launchy` from host:
  

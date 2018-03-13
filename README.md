@@ -35,6 +35,7 @@ You can run host applications on Xwayland in docker with:
 read Xenv < <(x11docker --wayland --gpu --showenv x11docker/xwayland)
 env $Xenv firefox
 ```
+You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
  # Screenshot
  Xwayland in docker with fvwm desktop in a Weston Wayland window:
  

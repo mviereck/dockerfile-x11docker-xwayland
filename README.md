@@ -32,12 +32,13 @@ Look at `x11docker --help` for further options.
 # Host applications on containered X server
 You can run host applications on Xwayland in docker with:
 ```
+mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix   # just to make sure
 read Xenv < <(x11docker --wayland --gpu --stdout --sharedir /tmp/.X11-unix x11docker/xwayland)
 env $Xenv firefox
 ```
-Be aware that directory `/tmp/.X11-unix` must already exist with permission `1777`.
+Be aware that directory `/tmp/.X11-unix` must already exist on host with permission `1777`.
 
-`Xenv` will contain `DISPLAY` of Xwayland. To specify a custom display number, you can use option `--display N`.
+`Xenv` will contain `DISPLAY` of Xwayland. You can specify a custom display number with option `--display N`.
 
 You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
  # Screenshot

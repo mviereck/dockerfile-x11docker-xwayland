@@ -56,7 +56,7 @@ RUN echo '#! /bin/sh\n\
 export DISPLAY=":$(echo $WAYLAND_DISPLAY | cut -d- -f2)" \n\
 export XAUTHORITY="$HOME/.Xauthority" \n\
 xauth add $DISPLAY . $(mcookie) \n\
-xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY\n\
+exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY\n\
 ' > /usr/local/bin/startxwayland
 RUN chmod +x /usr/local/bin/startxwayland
 
@@ -67,7 +67,7 @@ RUN chmod +x /usr/local/bin/startxwayland
 RUN echo '#! /bin/sh\n\
 [ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
 cp /xinitrc $HOME/xinitrc \n\
-echo "$*" >> $HOME/xinitrc \n\
+echo "exec $*" >> $HOME/xinitrc \n\
 exec startxwayland \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 

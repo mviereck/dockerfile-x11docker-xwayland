@@ -56,7 +56,7 @@ RUN echo '#! /bin/sh\n\
 export DISPLAY=":$(echo $WAYLAND_DISPLAY | cut -d- -f2)" \n\
 export XAUTHORITY="$HOME/.Xauthority" \n\
 xauth add $DISPLAY . $(mcookie) \n\
-exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY\n\
+exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY -extension MIT-SHM\n\
 ' > /usr/local/bin/startxwayland
 RUN chmod +x /usr/local/bin/startxwayland
 

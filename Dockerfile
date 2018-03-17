@@ -52,6 +52,7 @@ RUN echo '\n\
 xhost +SI:localuser:$USER >/dev/null\n\
 echo "DISPLAY=$DISPLAY" \n\
 unset WAYLAND_DISPLAY \n\
+unset GDK_BACKEND QT_QPA_PLATFORM CLUTTER_BACKEND SDL_VIDEODRIVER ELM_DISPLAY ELM_ACCEL ECORE_EVAS_ENGINE \n\ 
 export XDG_SESSION_TYPE=x11 \n\
 ' > /xinitrc
 

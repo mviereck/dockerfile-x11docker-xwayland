@@ -1,26 +1,28 @@
 # x11docker/xwayland
 # 
-# Run Xwayland in docker.
+# Run X server Xwayland in docker.
+#
+# Doesn't need X on host.
+# Needs weston on host.
+#   (Alternatives on host: kwin_wayland
+#    or an already running Wayland compositor)
 #
 # Use x11docker to run image. 
 # Get x11docker from github: 
 #   https://github.com/mviereck/x11docker 
 #
-# Example (needs weston or kwin_wayland on host, 
-# or a running Wayland compositor like Gnome 3 Wayland session): 
+# Example: 
 #
 #     x11docker --wayland --gpu x11docker/xwayland
 #
 # Look at x11docker --help for further options.
 #
-# This example runs an X server (Xwayland) in container 
-# without needing any X server on host.
+# How to run host X applications on Xwayland in docker:
+#   Look at https://github.com/mviereck/dockerfile-x11docker-xwayland
 #
-# Look at https://github.com/mviereck/dockerfile-x11docker-xwayland
-# on how to run X applications from host on Xwayland in container.
-#
-# This image runs fvwm on Xwayland as an example desktop environment.
-# Install your desired application and fill it in xinitrc below.
+# Cumstomize window manager:
+#   This image runs window manager fvwm on Xwayland.
+#   Install your desired enviroment and adjust CMD.
 
 FROM debian:stretch-slim
 ENV DEBIAN_FRONTEND noninteractive
@@ -49,6 +51,8 @@ RUN apt-get install -y --no-install-recommends fvwm lxmenu-data xterm
 RUN echo '\n\
 xhost +SI:localuser:$USER >/dev/null\n\
 echo "DISPLAY=$DISPLAY" \n\
+unset WAYLAND_DISPLAY \n\
+export XDG_SESSION_TYPE=x11 \n\
 ' > /xinitrc
 
 # script to run xinit -- Xwayland
@@ -56,7 +60,7 @@ RUN echo '#! /bin/sh\n\
 export DISPLAY=":$(echo $WAYLAND_DISPLAY | cut -d- -f2)" \n\
 export XAUTHORITY="$HOME/.Xauthority" \n\
 xauth add $DISPLAY . $(mcookie) \n\
-exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY -extension MIT-SHM\n\
+exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY -extension MIT-SHM +extension RANDR\n\
 ' > /usr/local/bin/startxwayland
 RUN chmod +x /usr/local/bin/startxwayland
 

@@ -42,7 +42,7 @@ Look at `x11docker --help` for further options.
 # Host applications on containered X server
 You can run host applications on Xwayland in docker with:
 ```
-mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix   # just to make sure
+mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix   # just to make sure it exists
 read Xenv < <(x11docker --wayland --gpu --stdout --sharedir /tmp/.X11-unix x11docker/xwayland)
 env $Xenv libreoffice
 ```
@@ -52,7 +52,12 @@ Be aware that directory `/tmp/.X11-unix` must already exist on host with permiss
 
 You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
 
+A one-liner using options `--display` and `--add`:
+```
+x11docker --wayland --gpu --display 50 --add 'sleep 2 && DISPLAY=:50 launchy &' --sharedir /tmp/.X11-unix x11docker/xwayland
+```
 
+Warning: Be aware that `--sharedir /tmp/.X11-unix` allows access to host X unix socket, too. If your host X allows access with `xhost` (check `xhost` output), container applications can access it, too. Evil applications can abuse that for keylogging and other awfull stuff. You can remove `xhost` authentication on host X with x11docker option `--no-xhost`. Host applications then use the cookie in `XAUTHORITY` that is not available for container applications.
 
  # Screenshot
  Xwayland in docker running fvwm desktop and providing `launchy` from host:

@@ -52,12 +52,15 @@ Be aware that directory `/tmp/.X11-unix` must already exist on host with permiss
 
 You can also run a panel or another launcher to have access to all host applications. A quite well integration provides [`launchy`](https://www.launchy.net/) that creates a working tray icon in container desktop or can be called with `<CRTL><space>`.
 
-A one-liner using options `--display` and `--add`:
-```
-x11docker --wayland --gpu --display 50 --add 'sleep 3 && DISPLAY=:50 launchy &' --sharedir /tmp/.X11-unix x11docker/xwayland
-```
+***Warning***: Be aware that `--sharedir /tmp/.X11-unix` shares host X unix socket, too. If your host X allows access with `xhost` (check output of plain `xhost`), container applications can access it, too. Evil applications can abuse that for keylogging and other awfull stuff. ***Solution:*** You can remove `xhost` authentication on host X with x11docker option `--no-xhost`. Host applications then use the cookie in `XAUTHORITY` that is not available for container applications.
 
-***Warning***: Be aware that `--sharedir /tmp/.X11-unix` allows access to host X unix socket, too. If your host X allows access with `xhost` (check `xhost` output), container applications can access it, too. Evil applications can abuse that for keylogging and other awfull stuff. ***Solution:*** You can remove `xhost` authentication on host X with x11docker option `--no-xhost`. Host applications then use the cookie in `XAUTHORITY` that is not available for container applications.
+A one-liner using options `--display` and `--no-xhost`, and `--add`ing `launchy` from host:
+```
+x11docker --display 50 --no-xhost \
+    --add 'sleep 3 && DISPLAY=:50 launchy &' \
+    --sharedir /tmp/.X11-unix \
+    --wayland --gpu x11docker/xwayland
+```
 
  # Screenshot
  Xwayland in docker running fvwm desktop and providing `launchy` from host:

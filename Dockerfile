@@ -44,9 +44,14 @@ RUN apt-get install -y xwayland
 
 
 #### Install window manager and xterm, adjust to your needs.
-#### Adjust CMD, too.
-RUN apt-get install -y --no-install-recommends fvwm lxmenu-data xterm
+RUN apt-get install -y fvwm
+CMD fvwm
+#RUN apt-get install -y --no-install-recommends fvwm-crystal
+#CMD fvwm-crystal
+#RUN apt-get install -y --no-install-recommends afterstep asclock lynx mc medit rox-filer wmcalc wmcpuload
+#CMD afterstep
 ####
+
 
 RUN echo '\n\
 xhost +SI:localuser:$USER >/dev/null\n\
@@ -77,8 +82,6 @@ exec startxwayland \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
-
-ENTRYPOINT start
-CMD fvwm
+ENTRYPOINT ["/usr/local/bin/start"]
 
 ENV DEBIAN_FRONTEND newt

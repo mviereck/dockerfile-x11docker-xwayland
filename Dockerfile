@@ -45,11 +45,11 @@ RUN apt-get install -y xwayland
 
 #### Install window manager and xterm, adjust to your needs.
 RUN apt-get install -y fvwm
-CMD fvwm
+CMD ["fvwm"]
 #RUN apt-get install -y --no-install-recommends fvwm-crystal
-#CMD fvwm-crystal
+#CMD ["fvwm-crystal"]
 #RUN apt-get install -y --no-install-recommends afterstep asclock lynx mc medit rox-filer wmcalc wmcpuload
-#CMD afterstep
+#CMD ["afterstep"]
 ####
 
 

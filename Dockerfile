@@ -44,11 +44,11 @@ RUN apt-get install -y xwayland
 
 
 #### Install window manager and xterm, adjust to your needs.
-RUN apt-get install -y fvwm
+RUN apt-get install -y fvwm xterm
 CMD ["fvwm"]
-#RUN apt-get install -y --no-install-recommends fvwm-crystal
+#RUN apt-get install -y --no-install-recommends fvwm-crystal xterm
 #CMD ["fvwm-crystal"]
-#RUN apt-get install -y --no-install-recommends afterstep asclock lynx mc medit rox-filer wmcalc wmcpuload
+#RUN apt-get install -y --no-install-recommends afterstep asclock lynx mc medit rox-filer wmcalc wmcpuload xterm
 #CMD ["afterstep"]
 ####
 
@@ -63,6 +63,7 @@ export XDG_SESSION_TYPE=x11 \n\
 
 # script to run xinit -- Xwayland
 RUN echo '#! /bin/sh\n\
+[ -z "$WAYLAND_DISPLAY" ] && echo "ERROR: WAYLAND_DISPLAY is not set. Need Wayland environment." >&2 && exit 1 \n\
 export DISPLAY=":$(echo $WAYLAND_DISPLAY | cut -d- -f2)" \n\
 export XAUTHORITY="$HOME/.Xauthority" \n\
 xauth add $DISPLAY . $(mcookie) \n\

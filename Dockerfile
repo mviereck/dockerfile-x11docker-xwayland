@@ -32,7 +32,7 @@ RUN apt-get update && apt-mark hold iptables && \
 RUN apt-get install -y dbus-x11 procps psmisc
 
 # OpenGL / MESA
-RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 kmod
+RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 kmod xz-utils
 
 # Install locales and set to english
 ENV LANG en_US.UTF-8

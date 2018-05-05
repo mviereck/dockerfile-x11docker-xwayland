@@ -54,10 +54,10 @@ You can also run a panel or another launcher to have access to all host applicat
 
 ***Warning***: Be aware that `--sharedir /tmp/.X11-unix` shares host X unix socket, too. If your host X allows access with `xhost` (check output of plain `xhost`), container applications can access it, too. Evil applications can abuse that for keylogging and other awfull stuff. ***Solution:*** You can remove `xhost` authentication on host X with x11docker option `--no-xhost`. Host applications then use the cookie in `XAUTHORITY` that is not available for container applications.
 
-A one-liner using options `--display` and `--no-xhost`, and `--add`ing `launchy` from host:
+A one-liner using options `--display` and `--no-xhost`, and running `launchy` from host after a delay to wait for Xwayland:
 ```
 x11docker --display 50 --no-xhost \
-    --add 'sleep 3 && DISPLAY=:50 launchy &' \
+    --runfromhost 'sleep 3 && DISPLAY=:50 launchy &' \
     --sharedir /tmp/.X11-unix \
     --wayland --gpu x11docker/xwayland
 ```

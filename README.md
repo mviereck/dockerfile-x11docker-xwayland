@@ -4,7 +4,7 @@ If `weston` or `kwin_wayland` are installed on host, you can also run from tty /
 
  - Use x11docker to run image. 
  - Get x11docker from github: 
-  https://github.com/mviereck/x11docker (Please use latest master version instead of latest release.)
+  https://github.com/mviereck/x11docker
   
 # Examples
 

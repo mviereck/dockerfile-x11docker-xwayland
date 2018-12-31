@@ -43,7 +43,7 @@ Look at `x11docker --help` for further options.
 You can run host applications on Xwayland in docker with:
 ```
 mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix   # just to make sure it exists
-read Xenv < <(x11docker --wayland --gpu --stdout --sharedir /tmp/.X11-unix x11docker/xwayland)
+read Xenv < <(x11docker --wayland --gpu --sharedir /tmp/.X11-unix x11docker/xwayland)
 env $Xenv libreoffice
 ```
 Be aware that directory `/tmp/.X11-unix` must already exist on host with permission `1777`.

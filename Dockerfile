@@ -24,23 +24,21 @@
 #   This image runs window manager fvwm on Xwayland.
 #   Install your desired enviroment and adjust CMD.
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-mark hold iptables && \
-    apt-get -y dist-upgrade && apt-get autoremove -y && apt-get clean
-RUN apt-get install -y dbus-x11 procps psmisc
-
-# OpenGL / MESA
-RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 kmod xz-utils
+RUN apt-get update && \
+    apt-get install -y dbus-x11 procps psmisc \
+                       mesa-utils mesa-utils-extra libxv1
 
 # Install locales and set to english
 ENV LANG en_US.UTF-8
-RUN echo $LANG UTF-8 > /etc/locale.gen
-RUN apt-get install -y locales && update-locale --reset LANG=$LANG
+RUN echo $LANG UTF-8 > /etc/locale.gen && \
+    apt-get install -y locales && \
+    update-locale --reset LANG=$LANG
 
-RUN apt-get install -y --no-install-recommends xinit xauth x11-xserver-utils
-RUN apt-get install -y xwayland
+RUN apt-get install -y --no-install-recommends xinit xauth x11-xserver-utils && \
+    apt-get install -y xwayland
 
 
 #### Install window manager and xterm, adjust to your needs.
@@ -72,17 +70,13 @@ exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY 
 RUN chmod +x /usr/local/bin/startxwayland
 
 # startscript to:
-# - copy dotfiles from /etc/skel
 # - entry CMD in xinitrc
 # - run /usr/local/bin/startxwayland
 RUN echo '#! /bin/sh\n\
-[ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
 cp /xinitrc $HOME/xinitrc \n\
-echo "exec $*" >> $HOME/xinitrc \n\
+echo "exec \"$@\"" >> $HOME/xinitrc \n\
 exec startxwayland \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
 ENTRYPOINT ["/usr/local/bin/start"]
-
-ENV DEBIAN_FRONTEND newt

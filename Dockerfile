@@ -54,8 +54,11 @@ CMD ["fvwm"]
 RUN echo '\n\
 xhost +SI:localuser:$USER >/dev/null\n\
 echo "DISPLAY=$DISPLAY" \n\
+echo "\n\
+Note: Xwayland fails if executed directly in compositor Sway. \n\
+In that case try:  x11docker --weston --wayland -- x11docker/xwayland" >&2\n\
 unset WAYLAND_DISPLAY \n\
-unset GDK_BACKEND QT_QPA_PLATFORM CLUTTER_BACKEND SDL_VIDEODRIVER ELM_DISPLAY ELM_ACCEL ECORE_EVAS_ENGINE \n\ 
+unset GDK_BACKEND QT_QPA_PLATFORM CLUTTER_BACKEND SDL_VIDEODRIVER ELM_DISPLAY ELM_ACCEL ECORE_EVAS_ENGINE \n\
 export XDG_SESSION_TYPE=x11 \n\
 ' > /xinitrc
 
@@ -64,10 +67,11 @@ RUN echo '#! /bin/sh\n\
 [ -z "$WAYLAND_DISPLAY" ] && echo "ERROR: WAYLAND_DISPLAY is not set. Need Wayland environment." >&2 && exit 1 \n\
 export DISPLAY=":$(echo $WAYLAND_DISPLAY | cut -d- -f2)" \n\
 export XAUTHORITY="$HOME/.Xauthority" \n\
+touch $XAUTHORITY \n\
 xauth add $DISPLAY . $(mcookie) \n\
 exec xinit $HOME/xinitrc -- /usr/bin/Xwayland $DISPLAY -retro -auth $XAUTHORITY -extension MIT-SHM +extension RANDR\n\
-' > /usr/local/bin/startxwayland
-RUN chmod +x /usr/local/bin/startxwayland
+' > /usr/local/bin/startxwayland && \
+chmod +x /usr/local/bin/startxwayland
 
 # startscript to:
 # - entry CMD in xinitrc
@@ -76,7 +80,7 @@ RUN echo '#! /bin/sh\n\
 cp /xinitrc $HOME/xinitrc \n\
 echo "exec \"$@\"" >> $HOME/xinitrc \n\
 exec startxwayland \n\
-' > /usr/local/bin/start 
-RUN chmod +x /usr/local/bin/start 
+' > /usr/local/bin/start && \
+chmod +x /usr/local/bin/start 
 
 ENTRYPOINT ["/usr/local/bin/start"]

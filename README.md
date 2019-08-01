@@ -25,7 +25,7 @@ CMD afterstep
 
 # Options
  - Persistent home folder stored on host with   `--home`
- - Shared host folder with                      `--sharedir DIR`
+ - Shared host folder with                      `--share DIR`
  - Hardware acceleration with option            `--gpu`
  - Clipboard sharing with option                `--clipboard`
  - Sound support with option                    `--alsa`
@@ -38,7 +38,7 @@ Look at `x11docker --help` for further options.
 You can run host applications on Xwayland in docker with:
 ```
 mkdir /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix   # just to make sure it exists
-read Xenv < <(x11docker --wayland --gpu --sharedir /tmp/.X11-unix x11docker/xwayland)
+read Xenv < <(x11docker --wayland --gpu --share /tmp/.X11-unix x11docker/xwayland)
 env $Xenv libreoffice
 ```
 Be aware that directory `/tmp/.X11-unix` must already exist on host with permission `1777`.
@@ -59,7 +59,7 @@ A one-liner using options `--display` and `--clean-xhost`, and running `launchy`
 x11docker --display 50 \
     --clean-xhost \
     --runfromhost 'sleep 3 && DISPLAY=:50 launchy &' \
-    --sharedir /tmp/.X11-unix \
+    --share /tmp/.X11-unix \
     --wayland \
     --weston \
     --gpu \

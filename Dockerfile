@@ -4,20 +4,16 @@
 #
 # Doesn't need X on host.
 # Needs weston on host.
-#   (Alternatives on host: kwin_wayland
-#    or an already running Wayland compositor)
 #
-# Use x11docker to run image. 
-# Get x11docker from github: 
-#   https://github.com/mviereck/x11docker 
+# Use x11docker to run image: https://github.com/mviereck/x11docker 
 #
 # Example: 
 #
-#     x11docker --wayland --gpu x11docker/xwayland
+#     x11docker --wayland --weston --gpu x11docker/xwayland
 #
 # Look at x11docker --help for further options.
 #
-# How to run host X applications on Xwayland in docker:
+# How to run host X applications on Xwayland in Docker container:
 #   Look at https://github.com/mviereck/dockerfile-x11docker-xwayland
 #
 # Cumstomize window manager:
@@ -25,28 +21,51 @@
 #   Install your desired enviroment and adjust CMD.
 
 FROM debian:buster-slim
-ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get install -y dbus-x11 procps psmisc \
-                       mesa-utils mesa-utils-extra libxv1
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      dbus-x11 \
+      libxv1 \
+      mesa-utils \
+      mesa-utils-extra \
+      psmisc \
+      procps
 
 # Install locales and set to english
 ENV LANG en_US.UTF-8
 RUN echo $LANG UTF-8 > /etc/locale.gen && \
-    apt-get install -y locales && \
-    update-locale --reset LANG=$LANG
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
+    env DEBIAN_FRONTEND=noninteractive update-locale --reset LANG=$LANG
 
-RUN apt-get install -y --no-install-recommends xinit xauth x11-xserver-utils && \
-    apt-get install -y xwayland
+RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      xauth \
+      xinit \
+      x11-xserver-utils && \
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      xwayland
 
 
 #### Install window manager and xterm, adjust to your needs.
-RUN apt-get install -y fvwm xterm
+RUN apt-get install -y \
+      fvwm \
+      xterm
 CMD ["fvwm"]
-#RUN apt-get install -y --no-install-recommends fvwm-crystal xterm
+
+#RUN apt-get install -y --no-install-recommends \
+#      fvwm-crystal \
+#      xterm
 #CMD ["fvwm-crystal"]
-#RUN apt-get install -y --no-install-recommends afterstep asclock lynx mc medit rox-filer wmcalc wmcpuload xterm
+
+#RUN apt-get install -y --no-install-recommends \
+#      afterstep \
+#      asclock \
+#      lynx \
+#      mc \
+#      medit \
+#      rox-filer \
+#      wmcalc \
+#      wmcpuload \
+#      xterm
 #CMD ["afterstep"]
 ####
 
